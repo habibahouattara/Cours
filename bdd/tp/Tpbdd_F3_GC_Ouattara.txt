@@ -1,0 +1,98 @@
+OUATTARA Umm-HAbibah
+
+#1
+select ARTNUM,ARTPOIDS,ARTPV
+from ARTICLE
+where ARTCOUL = "ROUGE"
+and ARTPV < 30
+order by ARTPOIDS,ARTNUM desc
+limit 1;
+
+#2
+select ARTNOM,avg(ARTPOIDS)
+from ARTICLE
+group by ARTNOM;
+
+#3
+select ARTNOM,max(ARTPV-ARTPA),avg(ARTPOIDS)
+from ARTICLE
+group by ARTNOM
+order by ARTPA;
+
+#4
+select count(*)
+from ARTICLE;
+
+#5
+select count(*)
+from ARTICLE
+where ARTCOUL is not null;
+
+#6
+select count(distinct A2.ARTCOUL)
+from ARTICLE as A1, ARTICLE as A2
+where A1.ARTCOUL != A2.ARTCOUL;
+
+#7
+select sum(ARTPA)
+from ARTICLE
+where ARTCOUL = "ROUGE";
+
+#8
+select ARTCOUL
+from ARTICLE
+where ARTCOUL is not null
+group by ARTCOUL;
+# Affiche dans l'ordre alphabétique
+
+select distinct ARTCOUL
+from ARTICLE
+where ARTCOUL is not null;
+#affiche dans l'ordre de lecture des lignes
+
+#9
+select avg(ARTPV)
+from ARTICLE
+where ARTCOUL is not null
+group by ARTCOUL;
+
+#10
+select ARTCOUL
+from ARTICLE
+where ARTCOUL is not null
+having avg(ARTPV) > 50;
+
+#11
+select ARTNOM,count(ARTNOM)
+from ARTICLE
+group by ARTNOM
+having count(ARTNOM) >= 2;
+
+#12
+select distinct CLNOM
+from CLIENT
+group by CLNOM
+having count(CLNOM) = 1;
+
+#13
+select ARTNUM
+from ARTICLE
+order by ARTPV desc
+limit 10;
+
+#14
+select ARTNUM,FRSNOM
+from ARTICLE,FOURNISSEUR
+where ARTFRS = FRSNUM
+and FRSVILLE = "Paris";
+
+#15
+select A1.ARTNUM,A2.ARTNUM,A1.ARTCOUL,A1.ARTFRS
+from ARTICLE as A1,ARTICLE as A2
+where A1.ARTNUM != A2.ARTNUM
+and A1.ARTFRS = A2.ARTFRS;
+
+#16
+select sum(ARTPV-ARTPA)
+from ARTICLE
+group by ARTNOM;

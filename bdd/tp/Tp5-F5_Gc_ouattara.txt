@@ -1,0 +1,26 @@
+#1
+select ARTNUM
+from ARTICLE
+where ARTCOUL is not null
+order by ARTCOUL desc;
+
+#2
+select distinct FRSNOM,ARTPA
+from FOURNISSEUR,ARTICLE
+where ARTFRS = FRSNUM and ARTPA = (select min(ARTPA)
+									from ARTICLE)
+                                    group by ARTPA;
+
+#3
+select ARTNUM,ARTNOM,ARTCOUL
+from ARTICLE
+where ARTPOIDS > (select avg(ARTPOIDS)
+				  from ARTICLE
+                  ) and ARTCOUL = (select ARTCOUL
+									from ARTICLE
+									where ARTNUM = 1);
+
+#4
+select ARTNUM,ARTNOM,ARTPV,ARTCOUL
+from ARTICLE
+where ARTPV > (select ARTPV from ARTICLE where ARTCOUL = 'VERT');

@@ -1,0 +1,142 @@
+## 2
+create table PERSONNE (
+CL_NUM int(11),
+CL_NOM varchar(255),
+CL_PRENOM varchar(255),
+CL_PAYS varchar(255)
+) engine=InnoDB;
+
+## 3
+rename table PERSONNE to CLIENT;
+
+## 4
+alter table CLIENT add primary key (CL_NUM);
+
+
+## 5
+insert into CLIENT (CL_NUM, CL_NOM, CL_PRENOM, CL_PAYS) values
+(1, "Dupond", "Jean", "France");
+
+insert into CLIENT(CL_NUM, CL_NOM, CL_PRENOM) values
+(2, "Gary", "Jacques");
+
+insert into CLIENT values (3, "Philippe", "Giles", null);
+
+## 6
+select * from CLIENT;
+
+## 7
+update CLIENT set CL_PAYS = "France" where CL_PAYS is null;
+
+## 8
+insert into CLIENT (CL_NUM,CL_NOM,CL_PRENOM,CL_PAYS) values
+(4,"Durand",null,"France"),
+(5,"Muller","Loic",null),
+(6,"Fournier",null,null);
+
+update CLIENT set CL_NOM = "Dupond" where CL_PAYS is null;
+
+## 9
+alter table CLIENT add column CL_VILLE varchar(255);
+
+update CLIENT set CL_VILLE = "Rouen" where CL_PAYS = "France";
+
+## 10
+delete from CLIENT where CL_NOM = "Dupond";
+
+## 11
+alter table CLIENT alter CL_PAYS set default "France";
+
+## 12
+alter table CLIENT modify CL_NOM varchar(255) not null;
+
+## 13
+alter table CLIENT change CL_NUM CLNUM int;
+alter table CLIENT change CL_NOM CLNOM varchar(255) not null;
+alter table CLIENT change CL_PRENOM CLPRENOM varchar(255);
+alter table CLIENT change CL_PAYS CLPAYS varchar(255);
+alter table CLIENT alter CLPAYS set default "France";
+alter table CLIENT change CL_VILLE CLVILLE varchar(255);
+
+## 14
+create table FOURNISSEUR (
+FRSNUM int(11) primary key,
+FRSNOM varchar(255)
+) engine=InnoDB;
+
+insert into FOURNISSEUR values (1, "Giles"), (2, "Philipes");
+
+## 15
+create table ARTICLE (
+ARTNUM int(11) primary key,
+ARTNOM varchar(255),
+ARTPOIDS int(11),
+ARTCOUL varchar(255),
+ARTPA int(11),
+ARTPV int(11),
+ARTFRS int(11)
+) engine = InnoDB;
+
+## 16
+insert into ARTICLE (ARTNUM, ARTNOM, ARTPOIDS, ARTCOUL, ARTPA, ARTPV, ARTFRS) values
+(1, "AGRAFEUSE", 150, "ROUGE", 20, 29, 4),
+(2, "CALCULATRICE", 150, "NOIR", 200, 235, 1),
+(3, "CACHET-DATEUR", 100, "BLANC", 21, 30, 4),
+(4, "LAMPE", 550, "ROUGE", 105, 149,5),
+(5, "LAMPE", 550, "BLANC",100,145,5),
+(6, "LAMPE",550,"BLEU",105,149,5),
+(7, "LAMPE",550,"VERT",105,149,5),
+(8, "PESE-LETTRE-1-500",null,null,120,200,3),
+(9, "PESE-LETTRE-1-1000",null,null,150,250,3),
+(10,"CRAYON",20,"ROUGE",1,2,2),
+(11,"CRAYON",20,"BLEU",1,2,2),
+(12,"CRAYON LUXE",20,"ROUGE",3,5,2),
+(13,"CRAYON LUXE",20,"VERT",3,5,2),
+(14,"CRAYON LUXE",20,"BLEU",3,5,2),
+(15,"CRAYON LUXE",20,"NOIR",3,5,2);
+
+## 17
+select ARTNUM,ARTNOM,ARTPOIDS
+from ARTICLE
+where ARTPOIDS > 200;
+
+## 18
+select ARTNUM,ARTNOM,ARTPOIDS
+from ARTICLE
+where ARTPV >= 2*ARTPA;
+
+## 19
+select *
+from ARTICLE
+where ARTCOUL = "ROUGE" and ARTPOIDS > 200;
+
+## 20
+select *
+from ARTICLE
+where ARTCOUL != "ROUGE" and ARTPOIDS != 200;
+
+## 21
+select *
+from ARTICLE
+where ARTPA between 100 and 150;
+
+## 22
+select *
+from ARTICLE
+where ARTCOUL is null;
+
+## 23
+select *
+from ARTICLE
+where ARTNOM like "C%";
+
+## 24
+select *
+from ARTICLE
+where ARTNOM like "C____";
+
+## 25
+select ARTNOM from ARTICLE where (ARTPV - ARTPA) > 1;
+
+## 26
+select (ARTPV - ARTPA) > 1 as MARGEB, ARTNOM from ARTICLE;

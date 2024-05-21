@@ -1,0 +1,91 @@
+#1
+select distinct FRSNUM, FRSNOM
+from FOURNISSEUR
+where FRSNUM not in (select FILNUM from FILIALES);
+
+#2
+select FRSNUM,FRSNOM
+from FOURNISSEUR
+where FRSNUM in (select ARTFRS
+				 from ARTICLE
+                 where ARTFRS != FRSNUM);
+
+#3
+select FRSNUM,FRSNOM
+from FOURNISSEUR
+where FRSNUM in (select FILNUM from FILIALES)
+and FRSNUM not in (select FILNUM
+					from FILIALES
+                    where FRSVILLE <> FILVILLE);
+
+select FRSNUM,FRSNOM
+from FOURNISSEUR
+where FRSNUM in (select FILNUM from FILIALES)
+and FRSVILLE = all (select FILVILLE
+				    from FILIALES
+                    where FILNUM = FRSNUM);
+				
+#4
+select FILNUM
+from FILIALES
+where FILVILLE = 'PARIS'
+and FILNUM in (select FILNUM
+			   from FILIALES
+               group by FILNUM
+               having count(FILVILLE) >= 3);
+
+#5
+select FILNUM,FRSNOM
+from FILIALES,FOURNISSEUR
+where FILVILLE = 'PARIS'
+and FILNUM in (select FILNUM
+			   from FILIALES
+               group by FILNUM
+               having count(FILVILLE) >= 3);
+
+#6
+select FILVILLE
+from FILIALES
+group by FILVILLE
+having count(FILNUM) = (select count(*) from FOURNISSEUR);
+
+#7
+select FILNUM,FILVILLE
+from FILIALES
+where FILVILLE not in (select FRSVILLE from FOURNISSEUR);
+
+#8
+select ARTNOM, avg(ARTPA)
+from ARTICLE, FOURNISSEUR
+where ARTFRS = FRSNUM
+and FRSVILLE = 'LYON'
+group by ARTNOM
+having min(ARTPA) >= 100;
+
+#9
+select ARTCOUL,group_concat(ARTNUM) as ARTNUM
+from ARTICLE
+group by ARTCOUL;
+
+#10
+select ARTNOM,group_concat(ARTCOUL) as ARTCOUL
+from ARTICLE
+group by ARTNOM;
+
+#11
+select ARTNOM,group_concat(ARTNUM) as ARTNUM,count(ARTNOM)
+from ARTICLE
+group by ARTNOM;
+
+#12
+create table MAGASIN (
+MAGNUM int,
+MAGLOC varchar(30),
+MAGGER varchar(30),
+primary key (MAGNUM)
+) engine = InnoDB;
+
+insert MAGASIN values
+(1, 'ROME', 'JEAN'),
+(2, 'FLORENCE', 'PAUL'),
+(3, 'PARIS', 'YVES');

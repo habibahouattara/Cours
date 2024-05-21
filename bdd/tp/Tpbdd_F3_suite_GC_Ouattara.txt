@@ -1,0 +1,59 @@
+#17
+select ARTNOM
+from ARTICLE
+group by ARTNOM
+order by sum(ARTPV-ARTPA) desc
+limit 1;
+
+select ARTNOM
+from ARTICLE
+order by (ARTPV-ARTPA) desc
+limit 1;
+
+#18
+select (ARTPV-ARTPA),max(ARTPOIDS)
+from ARTICLE
+group by (ARTPV-ARTPA);
+
+#19
+select (ARTPV-ARTPA),max(ARTPOIDS)
+from ARTICLE
+where (ARTPV-ARTPA) > 10
+group by (ARTPV-ARTPA);
+
+#20
+select FILVILLE
+from FILIALES
+group by FILVILLE
+having count(FILNUM) >= 3;
+
+#21
+select FRSNUM,FRSVILLE
+from FOURNISSEUR,FILIALES
+where FRSNUM = FILNUM
+and FRSVILLE = FILVILLE;
+
+#22
+select distinct FILVILLE
+from FILIALES,ARTICLE,FOURNISSEUR
+where ARTFRS = FRSNUM
+and FRSNUM = FILNUM
+group by ARTFRS
+having max(ARTPOIDS) >= 100;
+
+#23
+select distinct CLNOM,CLPRENOM,count(CLVILLE)
+from CLIENT
+group by CLNOM,CLPRENOM;
+
+#24
+select CLNOM,CLPRENOM,CLVILLE
+from CLIENT
+group by CLNOM
+having count(distinct CLVILLE) = 1;
+
+#25
+select FILVILLE
+from FILIALES
+group by FILVILLE
+having count(FILVILLE) > 1;

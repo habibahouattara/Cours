@@ -1,0 +1,193 @@
+OUATTARA Umm-Habibah
+
+## 1
+select DISTINCT ARTNOM
+from ARTICLE
+where ARTPOIDS > 20;
+
+## 2
+select *
+from ARTICLE
+where ARTPOIDS is not null
+order by ARTPOIDS desc;
+
+## 3
+select *
+from ARTICLE
+where ARTPOIDS is not null and ARTPA is not null
+order by ARTPOIDS,ARTPA desc;
+
+## 4
+select *
+from ARTICLE
+where ARTCOUL is not null
+order by (ARTPV - ARTPA) desc, ARTCOUL;
+
+## 5
+select *
+from ARTICLE
+order by (ARTPV - ARTPA) desc, ARTNOM desc;
+
+## 6
+select *
+from ARTICLE
+where ARTCOUL = "ROUGE"
+order by (ARTPV - ARTPA) desc, ARTNOM desc;
+
+## 7
+select *
+from ARTICLE
+WHERE ARTNOM like "%E"
+limit 0,3;
+
+## 8
+select *
+from ARTICLE
+where ARTNOM like "%E"
+limit 4,3;
+
+## 9
+select ARTNUM, ARTPA
+from ARTICLE
+order by ARTPV
+limit 0,1;
+
+## 10
+delete from FOURNISSEUR;
+
+insert into FOURNISSEUR (FRSNUM, FRSNOM) values 
+(1, "CATIO-ELECTRONIQUE"),
+(2, "LES STYLOS REUNIS"),
+(3, "MECANIQUE DE PRECISION"),
+(4,"SARL ROULAND"),
+(5,"ELECTROLAMP");
+
+## 11
+alter table ARTICLE
+add constraint fk_article_fournisseur foreign key(ARTFRS)
+references FOURNISSEUR(FRSNUM) on delete cascade;
+
+## 12
+select distinct ARTNOM,FRSNOM
+from ARTICLE,FOURNISSEUR
+where ARTNOM = "LAMPE"
+and ARTFRS = FRSNUM;
+
+## 13
+select distinct A1.ARTNOM
+from ARTICLE as A1, ARTICLE as A2
+where A1.ARTPA > A2.ARTPA
+and A2.ARTNUM = 5;
+
+## 14
+select ARTPOIDS, ARTNOM
+from ARTICLE, FOURNISSEUR
+where ARTCOUL = "ROUGE"
+and ARTFRS = FRSNUM;
+
+## 15
+select distinct A1.ARTNUM, A2.ARTNUM, A1.ARTCOUL, A2.ARTCOUL,A1.ARTFRS
+from ARTICLE as A1, ARICLE as A2
+where A1.ARTNUM != A2.ARTNUM
+and A1.ARTCOUL = A2.ARTCOUL
+and A1.ARTFRS = A2.ARTFRS;
+
+select distinct A1.ARTNUM, A2.ARTNUM, A1.ARTCOUL, A2.ARTCOUL, A1.ARTFRS
+from ARTICLE as A1, ARTICLE as A2
+where A1.ARTNUM != A2.ARTNUM
+and A1.ARTCOUL = A2.ARTCOUL
+and A1.ARTFRS = A2.ARTFRS
+and A1.ARTNUM < A2.ARTNUM;
+
+## 16
+select ARTNOM, FRSNOM
+from ARTICLE, FOURNISSEUR
+where FRSNOM like "L%"
+order by ARTNOM desc;
+
+## 17
+select CLNOM, FRSNOM
+from CLIENT, FOURNISSEUR
+where CLNOM = FRSNOM;
+
+## 18
+select C1.CLNUM,C2.CLNUM,C1.CLNOM,C2.CLNOM
+from CLIENT as C1,CLIENT as C2
+where C1.CLNOM = C2.CLNOM
+and C1.CLNUM != C2.CLNUM;
+
+## 19
+select A1.ARTNOM, A1.ARTPV
+from ARTICLE as A1, ARTICLE as A2
+where A1.ARTPV < A2.ARTPV
+and A2.ARTNOM = "AGRAFEUSE";
+
+## 20
+select A1.ARTNUM, A2.ARTPV
+from ARTICLE as A1, ARTICLE as A2
+where A1.ARTPA > A2.ARTPA
+and A2.ARTNOM = "CACHET-DATEUR"
+limit 0,2;
+
+## 21
+alter table FOURNISSEUR add column FRSVILLE varchar(255);
+
+## 22
+update FOURNISSEUR set FRSVILLE = "ROME" where FRSNUM = 1;
+update FOURNISSEUR set FRSVILLE = "PARIS" where FRSNUM = 2;
+update FOURNISSEUR set FRSVILLE = "ROUEN" where FRSNUM = 3;
+update FOURNISSEUR set FRSVILLE = "PARIS" where FRSNUM = 4;
+update FOURNISSEUR set FRSVILLE = "LYON" where FRSNUM = 5;
+
+## 23
+select CLNOM,FRSNOM,CLVILLE
+from CLIENT,FOURNISSEUR
+where CLVILLE = FRSVILLE;
+
+## 24
+select CLNUM, FRSNUM
+from CLIENT,FOURNISSEUR
+where CLVILLE != FRSVILLE;
+
+## 25
+select distinct F1.FRSNUM,F2.FRSNUM, F1.FRSNOM, F2.FRSNOM, F1.FRSVILLE
+from FOURNISSEUR as F1, FOURNISSEUR as F2
+where F1.FRSNUM != F2.FRSNUM
+and F1.FRSNUM < F2.FRSNUM;
+
+## 26
+create table FILIALES(
+FILNUM int(11),
+FILVILLE varchar(255)
+) engine = InnoDB;
+
+alter table FILIALES
+add constraint primary key pk_filiales (FILNUM, FILVILLE);
+
+alter table FILIALES
+add constraint fk_filiales_fournisseur foreign key (FILNUM)
+references FOURNISSEUR(FRSNUM) on delete cascade;
+
+## 27
+insert into FILIALES values
+(1, "ROME"),
+(1, "FLORENCE"),
+(2,"PARIS"),
+(2,"ROUEN"),
+(3, "DIEPPE"),
+(3, "PARIS"),
+(1, "BARCELONE"),
+(4, "PARIS"),
+(4, "MARSEILLE"),
+(4, "LYON");
+
+## 28
+select FRSNUM, FRSNOM
+from FILIALES, FOURNISSEUR
+where FILVILLE = "PARIS"
+and FILNUM = FRSNUM;
+
+## 29
+select FILVILLE
+from FILIALES
+where FILNUM = 3;
