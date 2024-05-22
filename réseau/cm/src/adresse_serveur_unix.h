@@ -1,0 +1,6 @@
+#ifndef _ADRESSE_SERVEUR_UNIX_H
+#define _ADRESSE_SERVEUR_UNIX_H
+
+#define ADRESSE_SERVEUR "adresse.socket"
+
+#endif // _ADRESSE_SERVEUR_UNIX_H

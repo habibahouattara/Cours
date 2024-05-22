@@ -1,0 +1,94 @@
+Return-Path: <Yannick.Guesnet@univ-rouen.fr>
+Received: from melun.univ-rouen.fr ([unix socket])
+	 by melun.univ-rouen.fr (Cyrus v2.3.16-Fedora-RPM-2.3.16-6) with LMTPA;
+	 Tue, 22 Jan 2013 10:02:08 +0100
+Received: from carentan.univ-rouen.fr (carentan.univ-rouen.fr [10.0.128.78])
+	by melun.univ-rouen.fr (Postfix) with ESMTP id 641B59803E
+	for <Yannick.Guesnet@univ-rouen.fr>; Tue, 22 Jan 2013 10:02:08 +0100 (CET)
+Received: from mailly.univ-rouen.fr (mailly.univ-rouen.fr [10.0.128.68])
+	by carentan.univ-rouen.fr (Postfix) with ESMTP id 61AD12002E
+	for <Yannick.Guesnet@univ-rouen.fr>; Tue, 22 Jan 2013 10:02:08 +0100 (CET)
+Received: from localhost (unknown [127.0.0.1])
+	by mailly.univ-rouen.fr (Postfix) with ESMTP id 5CBEEE041D
+	for <Yannick.Guesnet@univ-rouen.fr>; Tue, 22 Jan 2013 09:02:08 +0000 (UTC)
+Received: from mailly.univ-rouen.fr ([127.0.0.1])
+	by localhost (mailly.univ-rouen.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id Md8dlyI4jLph for <Yannick.Guesnet@univ-rouen.fr>;
+	Tue, 22 Jan 2013 10:02:08 +0100 (CET)
+Received: from mailhac.univ-rouen.fr (mailhac.univ-rouen.fr [10.0.128.40])
+	by mailly.univ-rouen.fr (Postfix) with ESMTP id 6A6CBE041B
+	for <Yannick.Guesnet@univ-rouen.fr>; Tue, 22 Jan 2013 10:02:06 +0100 (CET)
+Received: from localhost.localdomain (inf-port-guesnet.univ-rouen.fr [10.195.163.94])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mailhac.univ-rouen.fr (Postfix) with ESMTPSA id 4E47120157
+	for <Yannick.Guesnet@univ-rouen.fr>; Tue, 22 Jan 2013 10:02:06 +0100 (CET)
+Message-ID: <50FE558E.7020701@univ-rouen.fr>
+Date: Tue, 22 Jan 2013 10:02:06 +0100
+From: Yannick Guesnet <Yannick.Guesnet@univ-rouen.fr>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130110 Thunderbird/17.0.2
+MIME-Version: 1.0
+To: Yannick Guesnet <Yannick.Guesnet@univ-rouen.fr>
+Subject: Message avec image.
+Content-Type: multipart/mixed;
+ boundary="------------010008060405040301010701"
+
+This is a multi-part message in MIME format.
+--------------010008060405040301010701
+Content-Type: multipart/alternative;
+ boundary="------------030207030603020602050708"
+
+
+--------------030207030603020602050708
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+
+Un message avec une image en fichier joint.
+
+--------------030207030603020602050708
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+
+<html>
+  <head>
+    <meta content="text/html; charset=ISO-8859-1"
+      http-equiv="Content-Type">
+  </head>
+  <body bgcolor="#FFFFFF" text="#000000">
+    Un message avec une image en fichier joint.
+  </body>
+</html>
+
+--------------030207030603020602050708--
+
+--------------010008060405040301010701
+Content-Type: image/png;
+ name="view.png"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;
+ filename="view.png"
+
+iVBORw0KGgoAAAANSUhEUgAAAD4AAAA1CAYAAAAZBliHAAAAAXNSR0IArs4c6QAAAAZiS0dE
+AP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9oGBg4kBV5GB7YAAAQM
+SURBVGje7ZhvTBt1GMe/14xe6R1Y/qSUlQKWf91AihFBYCrxz6IOo8mCvDfRty5MfWvMEjXL
+EpOZZY4N6Bhx0cUAW+w0Y6zLAmTZSKBOhE6BAi1Uob27/qMgfXxnlqjBQaN3eJ+393vu+3x+
+z714coCKioqKioqKioqKioqMYLZT9NWlizTrnUMoGEIikQDLaqHnOFiLres2m22s9om6xl0l
+fuLT46QBUFZejrLScmQZssHzGZAkASvBVUxO/oDv3e51RqMJt7zSEqivb6hU/Kdx/MQndOfu
+bYrFo7QU8NFfnfEvL5IoCTTkGqT2d49Qt6MzodiJn+/ppo3NDbxxuA1SVERBfuGWNb6lBdqj
+2YOOsx3Q6dPX32t/n1XcpB0XOim+Fqf7M1P0sLXB4Cp99PExutB7nhQlfer0SQqHJfL8/OO2
+G18O+Kj96DvKET/XeYbuTbrJuzCzo6aXA366NXyTPjz2gazkNX/3YJOSKC4qRpHFyuwkwJS3
+l6mqfAySJEH24s6rV8j6qBWiJKYkJMuQzdir7ej9oodkLe7z+1BcbIU538KkKqiiwoapqSl5
+TzwajSHLYEhpUHaWAaFgSN7iicQadKwupUE8n4FINCJvcZZlEYvFUxokhcPgeE7e4hzHISQE
+UxokiiHoWFbe4gVmC2bnZrDo91KKpGl62oMa++PyX2A+7zhFIWE1JeKCEKT2o0eUscCwWhaz
+szM7DohEwuS+54bRaIQixBvqG3DDdQOBX5a3Pam1tTiJooD+vn60trYpQ9y2r5LJzMjEN84r
+CAZXHlo+FotQOCyh29GF5uZmlFhLGDmJb9nMxS97SZJEvPbq6zCZzP+oeSkskiAIcDi6cWt4
+FKY8I+rqa2Gr2IcXnz/IKEIcAPoGLtH0lAeNTU2o2l+Fjd82kGfM/1NtSFil5GYSd8fG8O13
+V/HM08/i6/4BZBseQU5uDnyLC0gmkzjX0cUoQhwAbt8ZoZHRUSTicZSWlsFqLUFmRgb0eg7R
+aAyCEITnp/sYnxiHVqtFZeV+5Obm4Np1FwLLARxobECe0QSXawiiKKGr08EoQvzBC5ibm4Pf
+54MYjiAWjUKn00Kv52A2W1BaakVD/YE/3nvZeZlOfnYaTU89ifR0HUymfLgnxhGJRNBxppNR
+jPh2aGp+jji9FhbzXhQVFaKwsAjuiXGEIxGc/Y/kNf9GyLBriElCgwWfH17vPObnvai214Dn
+ebz19pu0a8UBYNDpZBLrm5h/QN5ur4Ge59Dadph2rTgA3By8xqSlpWPRvwSvdx5erxeWgkLw
+PI9dLQ4AzoE+BkwaFhb9mPZ4MDwyikMth/C/obq2jl546WXqUdo/dxUFsrryK6PegoqKioqK
+iorcFpS0rc78DlA6uJusPNLHAAAAAElFTkSuQmCC
+--------------010008060405040301010701--
+

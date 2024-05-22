@@ -1,0 +1,590 @@
+SOCKET(7)                 Manuel du programmeur Linux                SOCKET(7)
+
+[1mNOM[0m
+       socket - Interface Linux aux sockets
+
+[1mSYNOPSIS[0m
+       [1m#include <sys/socket.h>[0m
+
+       [4msockfd[24m [1m= socket(int [4m[22mfamille_socket[24m[1m, int [4m[22mtype_socket[24m[1m, int [4m[22mprotocole[24m[1m);[0m
+
+[1mDESCRIPTION[0m
+       Cette page de manuel documente l'interface utilisateur de l'implémenta‐
+       tion Linux des sockets réseau. Les sockets compatibles BSD représentent
+       l'interface  uniforme  entre  le  processus utilisateur et les piles de
+       protocoles réseau dans  le  noyau.  Les  modules  des  protocoles  sont
+       regroupés  en  [4mfamilles[24m  [4mde[24m  [4mprotocoles[24m  tels  que  [1mAF_INET[22m,  [1mAF_IPX [22met
+       [1mAF_PACKET[22m, et en [4mtypes[24m [4mde[24m  [4msockets[24m  comme  [1mSOCK_STREAM  [22mou  [1mSOCK_DGRAM[22m.
+       Consultez  [1msocket[22m(2)  pour  plus d'informations sur les familles et les
+       types de sockets.
+
+   [1mFonctions du niveau socket[0m
+       Ces fonctions servent au processus utilisateur pour envoyer ou recevoir
+       des  paquets  et  pour  faire d'autres opérations sur les sockets. Pour
+       plus de détails, consultez leurs pages de manuel respectives.
+
+       [1msocket[22m(2) crée une socket, [1mconnect[22m(2) connecte une socket à une adresse
+       de  socket  distante,  la  fonction  [1mbind[22m(2)  attache  une socket à une
+       adresse  locale,  [1mlisten[22m(2)  indique  à  la  socket  que  de  nouvelles
+       connexions  doivent  être  acceptées, et [1maccept[22m(2) fournit une nouvelle
+       socket avec la nouvelle connexion entrante. [1msocketpair[22m(2) renvoie  deux
+       sockets   anonymes   connectées  (seulement  implémenté  pour  quelques
+       familles locales comme [1mAF_UNIX[22m).
+
+       [1msend[22m(2), [1msendto[22m(2), et [1msendmsg[22m(2) envoient des données sur une  socket,
+       et  [1mrecv[22m(2),  [1mrecvfrom[22m(2)  et [1mrecvmsg[22m(2) reçoivent les données envoyées
+       par une socket. [1mpoll[22m(2) et [1mselect[22m(2) attendent que des données arrivent
+       ou  que l'émission soit possible. De plus, les opérations d'entrée-sor‐
+       tie  standard  comme  [1mwrite[22m(2),  [1mwritev[22m(2),  [1msendfile[22m(2),  [1mread[22m(2)   et
+       [1mreadv[22m(2)  peuvent être utilisées pour la lecture et l'écriture des don‐
+       nées.
+
+       [1mgetsockname[22m(2) renvoie l'adresse de la socket locale et  [1mgetpeername[22m(2)
+       renvoie l'adresse de la socket distante. [1mgetsockopt[22m(2) et [1msetsockopt[22m(2)
+       servent à définir et obtenir les options de la couche socket ou  proto‐
+       cole. [1mioctl[22m(2) peut être utilisé pour lire et écrire d'autres options.
+
+       [1mclose[22m(2)  sert  à  fermer  une socket. [1mshutdown[22m(2) ferme une partie des
+       connexions d'une socket multiple.
+
+       La recherche ou l'utilisation de [1mpread[22m(2) et [1mpwrite[22m(2) avec un décalage
+       non nul n'est pas possible sur les sockets.
+
+       Des opérations d'entrée-sortie non bloquantes sur les sockets sont pos‐
+       sibles en définissant l'attribut [1mO_NONBLOCK [22mdu descripteur de la socket
+       avec  [1mfcntl[22m(2). Toutes les opérations qui devraient normalement bloquer
+       se terminent alors avec l'erreur [1mEAGAIN [22m(l'opération devra être  reten‐
+       tée ultérieurement). [1mconnect[22m(2) renverra l'erreur [1mEINPROGRESS[22m. L'utili‐
+       sateur peut alors attendre divers événements avec [1mpoll[22m(2) ou [1mselect[22m(2).
+
+       ┌───────────────────────────────────────────────────────────────┐
+       │                        Événements E/S                         │
+       ├─────────────┬─────────┬───────────────────────────────────────┤
+       │Événement    │ Appel   │ Circonstance                          │
+       ├─────────────┼─────────┼───────────────────────────────────────┤
+       │Lecture      │ POLLIN  │ Arrivée de nouvelles données          │
+       ├─────────────┼─────────┼───────────────────────────────────────┤
+       │Lecture      │ POLLIN  │ Configuration d'une connexion achevée │
+       │             │         │ (pour     les    sockets    orientées │
+       │             │         │ connexion)                            │
+       ├─────────────┼─────────┼───────────────────────────────────────┤
+       │Lecture      │ POLLHUP │ Demande de  déconnexion  initiée  par │
+       │             │         │ l'autre extrémité                     │
+       ├─────────────┼─────────┼───────────────────────────────────────┤
+       │Lecture      │ POLLHUP │ Connexion  rompue (seulement pour les │
+       │             │         │ protocoles orientés  connexion)  Lors │
+       │             │         │ de   l'écriture  sur  la  socket,  le │
+       │             │         │ signal [1mSIGPIPE [22mest aussi émis.        │
+       ├─────────────┼─────────┼───────────────────────────────────────┤
+       │Écriture     │ POLLOUT │ La socket a assez de  place  dans  le │
+       │             │         │ tampon d'émission pour écrire de nou‐ │
+       │             │         │ velles données.                       │
+       ├─────────────┼─────────┼───────────────────────────────────────┤
+       │Lect./Écrit. │ POLLIN| │ Un appel  sortant  à  [1mconnect[22m(2)  est │
+       │             │ POLLOUT │ terminé.                              │
+       ├─────────────┼─────────┼───────────────────────────────────────┤
+       │Lect./Écrit. │ POLLERR │ Une erreur asynchrone s'est produite. │
+       ├─────────────┼─────────┼───────────────────────────────────────┤
+       │Lect./Écrit. │ POLLHUP │ Le  correspondant  a  clos un sens de │
+       │             │         │ communication.                        │
+       ├─────────────┼─────────┼───────────────────────────────────────┤
+       │Exception    │ POLLPRI │ Arrivée de données  urgentes.  [1mSIGURG [22m│
+       │             │         │ est alors envoyé.                     │
+       └─────────────┴─────────┴───────────────────────────────────────┘
+       Une alternative à [1mpoll[22m(2) et [1mselect[22m(2) est de laisser le noyau informer
+       l'application des événements par  l'intermédiaire  d'un  signal  [1mSIGIO[22m.
+       Pour  cela,  l'attribut  [1mO_ASYNC [22mdoit être défini sur un descripteur de
+       fichier de la socket via [1mfcntl[22m(2) et un gestionnaire de signal  valable
+       pour   [1mSIGIO  [22mdoit  être  installé  avec  [1msigaction[22m(2).  Consultez  les
+       remarques sur les [4mSignaux[24m ci-dessous.
+
+   [1mStructures d'adresse de socket[0m
+       Chaque domaine de socket a son  propre  format  pour  les  adresses  de
+       socket,  avec une structure d'adresse propre. Chacune de ces structures
+       commence  avec  un  champ  entier   « family »   (famille),   de   type
+       [4msa_family_t[24m,  qui  indique  le type de structure d'adresse. Cela permet
+       aux appels système génériques à  tous  les  domaines  de  sockets  (par
+       exemple [1mconnect[22m(2), [1mbind[22m(2), [1maccept[22m(2), [1mgetsockname[22m(2), [1mgetpeername[22m(2))
+       de déterminer le domaine d'une adresse de socket donnée.
+
+       Le type [4mstruct[24m [4msockaddr[24m est défini afin  de  pouvoir  passer  n'importe
+       quel  type d'adresse de socket aux interface dans l'API des sockets. Le
+       but de  ce  type  est  purement  d'autoriser  la  conversion  de  types
+       d'adresse  de  socket  propres à un domaine vers le type « générique »,
+       afin d'éviter les avertissements du compilateur au sujet de la non cor‐
+       respondance dans les appels de l'API des sockets.
+
+       De   plus,  l'API  des  sockets  fournit  le  type  de  données  [4mstruct[0m
+       [4msockaddr_storage[24m. Ce  type  est  fait  pour  contenir  toute  structure
+       d'adresse  de socket spécifique à un domaine. Il est suffisamment grand
+       et est aligné correctement (en particulier, il  est  assez  grand  pour
+       contenir  des  adresses  de  socket  IPv6). Cette structure contient le
+       champ suivant, qui peut être utilisé pour identifier le type  d'adresse
+       socket effectivement stockée dans la structure :
+
+               sa_family_t ss_family;
+
+       La structure [4msockaddr_storage[24m est utile dans les programmes qui doivent
+       prendre en charge les adresses de  socket  de  manière  générique  (par
+       exemple  les  programmes  qui  doivent  gérer à la fois des adresses de
+       socket IPv4 et IPv6).
+
+   [1mOptions de sockets[0m
+       Les options présentées ci-dessous peuvent être  définies  en  utilisant
+       [1msetsockopt[22m(2) et lues avec [1mgetsockopt[22m(2) avec le niveau de socket posi‐
+       tionné à [1mSOL_SOCKET[22m, et  ce  pour  toutes  les  sockets.  Sauf  mention
+       contraire, [4moptval[24m est un pointeur vers un [4mint[24m.
+
+       [1mSO_ACCEPTCONN[0m
+              Renvoie  une  valeur indiquant si la socket a été déclarée comme
+              acceptant les connexions à  l'aide  de  [1mlisten[22m(2).  La  valeur 0
+              indique  que  la socket n'est pas en attente de connexions et la
+              valeur 1 indique que la socket  accepte  les  connexions.  Cette
+              option de socket peut être seulement lue, et pas modifiée.
+
+       [1mSO_BINDTODEVICE[0m
+              Attache  cette socket à un périphérique donné, tel que « eth0 »,
+              comme indiqué dans le nom d'interface transmis. Si  le  nom  est
+              une  chaîne  vide  ou  si  la longueur de l'option est nulle, la
+              socket est détachée du périphérique. L'option transmise est  une
+              chaîne  de  longueur  variable  terminée  par  un caractère nul,
+              contenant le nom de  l'interface,  la  longueur  maximale  étant
+              [1mIFNAMSIZ[22m.  Si une socket est attachée à une interface, seuls les
+              paquets reçus de cette interface particulière sont  traités  par
+              la  socket.  Cela  ne  fonctionne  que  pour  certains  types de
+              sockets, en particulier les sockets [1mAF_INET[22m. Ce n'est  pas  géré
+              pour les sockets paquet (utilisez pour cela [1mbind[22m(2)).
+
+              Avant Linux 3.8, cette option de socket pouvait être configurée,
+              sans pouvoir être lue par [1mgetsockopt[22m(2). Depuis Linux 3.8,  elle
+              est lisible. Le paramètre [4moptlen[24m doit contenir la taille du tam‐
+              pon destiné à recevoir le nom  du  périphérique,  préférablement
+              [1mIFNAMSZ[22m.  La  véritable longueur du nom du périphérique est ren‐
+              voyée dans le paramètre [4moptlen[24m.
+
+       [1mSO_BROADCAST[0m
+              Définir ou lire l'attribut de diffusion. Une  fois  activé,  les
+              sockets  de  datagrammes sont autorisées à envoyer des paquets à
+              une adresse de diffusion. Cette option n'a aucun effet  sur  les
+              sockets orientées flux.
+
+       [1mSO_BSDCOMPAT[0m
+              Active  la compatibilité BSD bogue-à-bogue. Cela est utilisé par
+              le module du protocole UDP de Linux 2.0 et 2.2. Si cette  compa‐
+              tibilité  est  activée,  les erreurs ICMP reçues pour une socket
+              UDP ne seront pas transmises au programme utilisateur. Dans  les
+              versions  récentes  du  noyau,  la gestion de cette option a été
+              abandonnée progressivement : Linux 2.4 l'ignore  silencieusement
+              et  Linux 2.6 génère une alerte noyau (printk()) si le programme
+              utilise cette option. Linux 2.0 activait également  les  options
+              de  compatibilité  BSD bogue-à-bogue (modification aléatoire des
+              en-têtes, non prise en compte de l'attribut de  diffusion)  pour
+              les  sockets  brutes ayant cette option, mais cela a été éliminé
+              dans Linux 2.2.
+
+       [1mSO_DEBUG[0m
+              Active le débogage de socket. Cela n'est autorisé que  pour  les
+              processus  avec  la  capacité  [1mCAP_NET_ADMIN  [22mou  un identifiant
+              d'utilisateur effectif égal à 0.
+
+       [1mSO_DOMAIN [22m(depuis Linux 2.6.32)
+              Récupère le domaine de socket en tant  qu'entier,  en  renvoyant
+              une valeur telle que [1mAF_INET6[22m. Consultez [1msocket[22m(2)  pour plus de
+              détails. Cette option de socket peut être seulement lue, et  pas
+              modifiée.
+
+       [1mSO_ERROR[0m
+              Lit  et  efface l'erreur en cours sur la socket. Cette option de
+              socket peut être seulement lue,  et  pas  modifiée.  Demande  un
+              entier.
+
+       [1mSO_DONTROUTE[0m
+              Ne  pas  émettre par l'intermédiaire d'une passerelle, n'envoyer
+              qu'aux hôtes directement connectés.  Le  même  effet  peut  être
+              obtenu   avec  l'attribut  [1mMSG_DONTROUTE  [22mdurant  une  opération
+              [1msend[22m(2) sur la socket. Demande un attribut entier booléen.
+
+       [1mSO_KEEPALIVE[0m
+              Active l'émission de  messages  périodiques  gardant  la  socket
+              ouverte  pour les sockets orientées connexion. Demande un attri‐
+              but entier booléen.
+
+       [1mSO_LINGER[0m
+              Définit ou lit l'option [1mSO_LINGER[22m. Le paramètre est  une  struc‐
+              ture [4mlinger[24m.
+
+                  struct linger {
+                      int l_onoff;    /* définition de l'activité */
+                      int l_linger;   /* durée d'attente en secondes */
+                  };
+
+              Lorsque  ce  paramètre  est  actif, un appel à [1mclose[22m(2) ou [1mshut‐[0m
+              [1mdown[22m(2) ne se terminera pas  avant  que  tous  les  messages  en
+              attente  pour  la  socket  aient été correctement émis ou que le
+              délai d'attente soit écoulé. Sinon, l'appel se termine  immédia‐
+              tement et la fermeture est effectuée en arrière-plan. Lorsque la
+              socket est fermée au cours d'un [1mexit[22m(2), elle attend toujours en
+              arrière-plan.
+
+       [1mSO_MARK [22m(depuis Linux 2.6.25)
+              Positionner  la  marque  pour chaque paquet envoyé au travers de
+              cette socket (similaire à la cible MARK de netfilter, mais  pour
+              les  sockets). Le changement de marque peut être utilisé pour un
+              routage par marques  sans  netfilter  ou  pour  le  filtrage  de
+              paquets.   Utiliser   cette   option   nécessite   la   capacité
+              [1mCAP_NET_ADMIN[22m.
+
+       [1mSO_OOBINLINE[0m
+              Si cette option est activée, les données hors bande sont placées
+              directement  dans  le  flux  des données reçues. Sinon, elles ne
+              sont transmises que si l'attribut [1mMSG_OOB [22mest défini  durant  la
+              réception.
+
+       [1mSO_PASSCRED[0m
+              Autorise  ou  interdit  la  réception  des  messages de contrôle
+              [1mSCM_CREDENTIALS[22m. Pour plus de détails, consultez [1munix[22m(7).
+
+       [1mSO_PEEK_OFF [22m(depuis Linux 3.4)
+              Cette option, qui n'est à ce jour garantie que pour les  sockets
+              [1munix[22m(7),  définit  la  valeur  de la « position de lecture » (ou
+              « peek offset ») pour  l'appel  système  [1mrecv[22m(2)  lorsqu'il  est
+              invoqué avec l'attribut [1mMSG_PEEK[22m.
+
+              Lorsque  cette  option reçoit une valeur négative (elle est ini‐
+              tialisée à -1 pour toute  nouvelle  socket),  elle  se  comporte
+              classiquement :  [1mrecv[22m(2), avec l'attribut [1mMSG_PEEK[22m, lit les don‐
+              nées depuis le début de la file.
+
+              Lorsque l'option reçoit une valeur supérieure ou égale  à  zéro,
+              alors  la lecture suivante des données accumulées dans la socket
+              est réalisée à la position précisée par la valeur  de  l'option.
+              Dans  le  même temps, la « position de lecture » est incrémentée
+              du nombre d'octets lus dans la file, de façon à ce que  la  pro‐
+              chaine lecture renvoie la donnée suivante dans la file.
+
+              Si  des données sont retirées de la tête de la file par la fonc‐
+              tion [1mrecv[22m(2) (ou équivalent) sans l'attribut [1mMSG_PEEK[22m, alors  la
+              « position  de lecture » est diminuée du nombre d'octets suppri‐
+              més. Autrement dit, l'acquisition de données sans avoir  recours
+              à  l'attribut [1mMSG_PEEK [22ma pour effet de modifier la « position de
+              lecture », de sorte que la prochaine lecture renvoie les données
+              qui  auraient été renvoyées si aucune donnée n'avait été suppri‐
+              mée.
+
+              Pour les sockets de datagrammes, si la « position  de  lecture »
+              pointe  à  l'intérieur  d'un paquet, alors les données renvoyées
+              seront marquées de l'attribut [1mMSG_TRUNC[22m.
+
+              L'exemple suivant illustre l'usage de [1mSO_PEEK_OFF[22m. Imaginons une
+              socket de flux contenant les données suivantes dans sa file :
+
+                  aabbccddeeff
+
+              La séquence suivante d'appels à [1mrecv[22m(2) aura l'effet décrit dans
+              les commentaires :
+
+                  int ov = 4;                  // affecte 4 à la position de lecture
+                  setsockopt(fd, SOL_SOCKET, SO_PEEK_OFF, &ov, sizeof(ov));
+
+                  recv(fd, buf, 2, MSG_PEEK);  // Lit "cc"; l'indide de position prend la valeur 6
+                  recv(fd, buf, 2, MSG_PEEK);  // Lit "dd"; l'indice de position prend la valeur 8
+                  recv(fd, buf, 2, 0);         // Lit "aa"; l'indice de position prend la valeur 6
+                  recv(fd, buf, 2, MSG_PEEK);  // Lit "ee"; l'indice position prend la valeur 8
+
+       [1mSO_PEERCRED[0m
+              Renvoie les données  d'authentification  du  processus  étranger
+              connecté  à  cette  socket.  Cela  n'est  possible  que pour les
+              sockets de flux [1mAF_UNIX [22mconnectées  et  les  paires  de  sockets
+              [1mAF_UNIX  [22mde  flux  et  de datagrammes crées avec [1msocketpair[22m(2) ;
+              consultez  [1munix[22m(7).  Les  données  retournées  sont  celles  qui
+              étaient  effectives au moment de l'appel à [1mconnect[22m(2) ou [1msocket‐[0m
+              [1mpair[22m(2). L'argument est une structure [4mucred[24m. Il faut définir  la
+              macro  de  test  de  fonctionnalité  [1m_GNU_SOURCE [22mpour activer la
+              définition de cette structure dans [4m<sys/socket.h>[24m. Cette  option
+              de socket peut être seulement lue, et pas modifiée.
+
+       [1mSO_PRIORITY[0m
+              Définir  la  priorité  définie  par  le  protocole pour tous les
+              paquets envoyés sur la socket. Linux utilise cette  valeur  pour
+              trier  les  files  réseau : les paquets avec une priorité élevée
+              peuvent être traités d'abord, en  fonction  de  la  gestion  des
+              files  sur  le  périphérique.  Pour [1mip[22m(7), cela définit aussi le
+              champ IP Type-Of-Service (TOS) pour les paquets  sortants.  Éta‐
+              blir  une  priorité  en  dehors  de l'intervalle allant de 0 à 6
+              nécessite la capacité [1mCAP_NET_ADMIN[22m.
+
+       [1mSO_PROTOCOL [22m(depuis Linux 2.6.32)
+              Récupère le protocole de socket en tant qu'entier, en  renvoyant
+              une  valeur  telle  que  [1mIPPROTO_SCTP[22m. Consultez [1msocket[22m(2)  pour
+              plus de détails. Cette option de socket peut être seulement lue,
+              et pas modifiée.
+
+       [1mSO_RCVBUF[0m
+              Définit  ou lit la taille maximale en octets du tampon de récep‐
+              tion. Le noyau double cette valeur  (pour  prévoir  de  l'espace
+              pour  les  opérations  de service) lorsque la valeur est définie
+              avec [1msetsockopt[22m(2), et cette valeur doublée  est  retournée  par
+              [1mgetsockopt[22m(2).  La  valeur par défaut est définie par le fichier
+              [4m/proc/sys/net/core/rmem_default[24m et la valeur maximale  autorisée
+              est  définie  par  le  fichier  [4m/proc/sys/net/core/rmem_max[24m.  La
+              valeur (doublée) minimale pour cette option est 256.
+
+       [1mSO_RCVBUFFORCE [22m(depuis Linux 2.6.14)
+              En utilisant cette option de  socket,  un  processus  privilégié
+              ([1mCAP_NET_ADMIN[22m)  peut exécuter la même tâche que [1mSO_RCVBUF[22m, mais
+              la limite [4mrmem_max[24m peut être remplacée.
+
+       [1mSO_RCVLOWAT [22met [1mSO_SNDLOWAT[0m
+              Indique le nombre minimal d'octets dans le tampon  pour  que  la
+              couche  socket passe les données au protocole ([1mSO_SNDLOWAT[22m) ou à
+              l'utilisateur en réception ([1mSO_RCVLOWAT[22m). Ces deux valeurs  sont
+              initialisées  à  1.  [1mSO_SNDLOWAT  [22mn'est  pas  modifiable ([1msetso‐[0m
+              [1mckopt[22m(2) échoue  avec  l'erreur  [1mENOPROTOOPT[22m).  [1mSO_RCVLOWAT  [22mest
+              modifiable   seulement  depuis  Linux 2.4.  Les  appels  système
+              [1mselect[22m(2) et [1mpoll[22m(2) ne respectent pour le moment pas la défini‐
+              tion de [1mSO_RCVLOWAT [22msur Linux, et marque la socket comme lisible
+              même lorsqu'un unique octet de données est disponible.  La  lec‐
+              ture  suivante  depuis  la  socket  sera  bloquée jusqu'à ce que
+              [1mSO_RCVLOWAT [22moctets soient disponibles.
+
+       [1mSO_RCVTIMEO [22met [1mSO_SNDTIMEO[0m
+              Indiquer le délai maximal d'émission ou de  réception  avant  de
+              signaler  une erreur. Le paramètre est une structure [4mtimeval[24m. Si
+              une fonction d'entrée ou de sortie bloque pendant cet intervalle
+              de  temps  et  que  des  données  ont été envoyées ou reçues, la
+              valeur de retour de cette fonction sera la quantité  de  données
+              transmises ;  si  aucune donnée n'a été transmise et si le délai
+              d'attente est atteint, -1 est renvoyé et [4merrno[24m est positionnée à
+              [1mEAGAIN  [22mou  [1mEWOULDBLOCK[22m, ou [1mEINPROGRESS [22m(pour [1mconnect[22m(2)), comme
+              si la socket avait été définie comme non bloquante. Si le  délai
+              d'attente  est défini à zéro (valeur par défaut), l'opération ne
+              sera jamais interrompue. Les délais n'ont d'effet que  pour  les
+              appels  système  faisant  des  E/S  sur des sockets (par exemple
+              [1mread[22m(2),  [1mrecvmsg[22m(2),  [1msend[22m(2),  [1msendmsg[22m(2)) ;  ils  n'ont   pas
+              d'effet pour [1mselect[22m(2), [1mpoll[22m(2), [1mepoll_wait[22m(2), etc.
+
+       [1mSO_REUSEADDR[0m
+              Indique que les règles utilisées pour la validation des adresses
+              fournies dans un appel à [1mbind[22m(2) doivent autoriser la réutilisa‐
+              tion des adresses locales. Pour les sockets [1mAF_INET[22m, cela signi‐
+              fie que la socket peut être attachée à n'importe quelle  adresse
+              sauf  lorsqu'une  socket active en écoute y est liée. Lorsque la
+              socket en écoute est attachée à [1mINADDR_ANY [22mavec un  port  spéci‐
+              fique,  il n'est pas possible de s'attacher à ce port quelle que
+              soit  l'adresse  locale.  L'argument  est  un  attribut  booléen
+              entier.
+
+       [1mSO_RXQ_OVFL [22m(depuis Linux 2.6.33)
+              Indique  qu'un  message  auxiliaire  (cmsg)  sous la forme d'une
+              valeur non-signée et codée sur 32 bits doit être jointe aux tam‐
+              pons  de  sockets  (skbs), indiquant le nombre de paquets perdus
+              par la socket entre les deux derniers paquets reçus.
+
+       [1mSO_SNDBUF[0m
+              Définit ou lit la taille maximale en octets  du  tampon  d'émis‐
+              sion.  Le  noyau  double  cette valeur (pour prévoir de l'espace
+              pour les opérations de service) lorsque la  valeur  est  définie
+              avec  [1msetsockopt[22m(2),  et  cette valeur doublée est retournée par
+              [1mgetsockopt[22m(2). La valeur par défaut est définie par  le  fichier
+              [4m/proc/sys/net/core/wmem_default[24m  et la valeur maximale autorisée
+              est  définie  par  le  fichier  [4m/proc/sys/net/core/wmem_max[24m.  La
+              valeur (doublée) minimale pour cette option est 2048.
+
+       [1mSO_SNDBUFFORCE [22m(depuis Linux 2.6.14)
+              En  utilisant  cette  option  de socket, un processus privilégié
+              ([1mCAP_NET_ADMIN[22m) peut exécuter la même tâche que [1mSO_SNDBUF[22m,  mais
+              la limite [4mwmem_max[24m peut être remplacée.
+
+       [1mSO_TIMESTAMP[0m
+              Active  ou  désactive  la  réception  des  messages  de contrôle
+              [1mSO_TIMESTAMP[22m. Le message de  contrôle  d'horodatage  est  envoyé
+              avec  le  niveau [1mSOL_SOCKET [22met le champ [4mcmsg_data[24m est une struc‐
+              ture [4mtimeval[24m indiquant la date de réception  du  dernier  paquet
+              fourni  à  l'utilisateur  dans cet appel. Consultez [1mcmsg[22m(3) pour
+              plus de détails sur les messages de contrôle.
+
+       [1mSO_TYPE[0m
+              Lit le type de socket, sous forme d'entier (comme  [1mSOCK_STREAM[22m).
+              Cette option de socket peut être seulement lue, et pas modifiée.
+
+       [1mSO_BUSY_POLL [22m(depuis Linux 3.11)
+              Définit  la  durée  approximative,  en  milliseconde,  d’attente
+              active  de  réception   bloquante   en   absence   de   données.
+              [1mCAP_NET_ADMIN  [22mest  nécessaire  pour  augmenter cette valeur. La
+              valeur par défaut pour cette option est contrôlée par le fichier
+              [4m/proc/sys/net/core/busy_read[24m.
+
+              La valeur dans le fichier [4m/proc/sys/net/core/busy_poll[24m détermine
+              la durée pendant laquelle [1mselect[22m(2) et [1mpoll[22m(2) seront en attente
+              active  lors  d’une  opération sur des sockets avec [1mSO_BUSY_POLL[0m
+              défini et qu’aucun événement à signaler n’est trouvé.
+
+              Dans les deux cas, l’attente active ne sera réalisée que lorsque
+              les  dernières  données  reçues  par  la socket proviennent d’un
+              périphérique réseau qui ne prend pas en charge cette option.
+
+              Bien que l’attente active peut améliorer la latence de  quelques
+              applications, une attention particulière doit être portées à son
+              utilisation puisque cela augmentera à la fois  l’utilisation  du
+              processeur et la consommation puissance.
+
+   [1mSignaux[0m
+       Lors  de  l'écriture sur une socket orientée connexion qui a été fermée
+       (localement ou à l'autre extrémité), le signal [1mSIGPIPE  [22mest  envoyé  au
+       processus  qui  écrivait,  et  [1mEPIPE  [22mest  renvoyé. Le signal n'est pas
+       envoyé  lorsque  l'appel  d'écriture   indiqué   contenait   l'attribut
+       [1mMSG_NOSIGNAL[22m.
+
+       Lorsque demandé avec l'option [1mFIOSETOWN [22mde [1mfcntl[22m(2) ou l'option [1mSIOCSP‐[0m
+       [1mGRP [22mde  [1mioctl[22m(2),  le  signal  [1mSIGIO  [22mest  envoyé  quand  un  événement
+       d'entrée-sortie a lieu. Il est possible d'utiliser [1mpoll[22m(2) ou [1mselect[22m(2)
+       dans le gestionnaire de signal pour savoir sur quelle  socket  l'événe‐
+       ment  s'est produit. Une alternative (sous Linux 2.2) est de définir un
+       signal en temps-réel avec le  [1mfnctl[22m(2)  [1mF_SETSIG[22m.  Le  gestionnaire  du
+       signal en temps-réel sera appelé avec le descripteur de fichier dans le
+       champ [4msi_fd[24m de [4msiginfo_t[24m. Consultez [1mfcntl[22m(2) pour plus d'informations.
+
+       Dans certains cas (par exemple, différents processus accédant à la même
+       socket),  la  condition ayant déclenché le signal [1mSIGIO [22mpeut avoir déjà
+       disparu quand le processus réagit au signal. Si  cela  se  produit,  le
+       processus devrait attendre à nouveau car Linux renverra ce signal ulté‐
+       rieurement.
+
+   [1mInterfaces /proc[0m
+       Les paramètres réseau de base des sockets sont accessibles en utilisant
+       les fichiers du répertoire [4m/proc/sys/net/core/[24m.
+
+       [4mrmem_default[0m
+              contient la taille en octets par défaut du tampon de réception.
+
+       [4mrmem_max[0m
+              contient  la  taille  maximale  en octets du tampon de réception
+              qu'un utilisateur peut définir avec  l'option  [1mSO_RCVBUF  [22mde  la
+              socket.
+
+       [4mwmem_default[0m
+              contient  la taille en octets par défaut du tampon d'émission de
+              la socket.
+
+       [4mwmem_max[0m
+              contient la taille maximale en octets du tampon d'émission qu'un
+              utilisateur peut définir avec l'option [1mSO_SNDBUF [22mde la socket.
+
+       [4mmessage_cost[24m et [4mmessage_burst[0m
+              configurent le filtrage par jeton utilisé pour limiter la charge
+              des messages d'avertissement dus  aux  événements  réseau  exté‐
+              rieurs.
+
+       [4mnetdev_max_backlog[0m
+              contient le nombre maximal de paquets dans la file d'entrée glo‐
+              bale.
+
+       [4moptmem_max[0m
+              contient la taille maximale par socket des données de service et
+              des données de contrôle utilisateur comme les iovecs.
+
+   [1mIoctls[0m
+       Ces opérations sont accessibles en utilisant [1mioctl[22m(2) :
+
+           [4merror[24m [1m= ioctl([4m[22mip_socket[24m[1m, [4m[22mtype_ioctl[24m[1m, [4m[22m&valeur_résultat[24m[1m);[0m
+
+       [1mSIOCGSTAMP[0m
+              Renvoie  une structure [4mtimeval[24m avec la date de réception du der‐
+              nier paquet transmis à l'utilisateur. Cela est  utile  pour  des
+              mesures précises du temps de cheminement. Consultez [1msetitimer[22m(2)
+              pour une description de la structure [4mtimeval[24m.  L'ioctl  ne  doit
+              être utilisé que si l'option [1mSO_TIMESTAMP [22mde la socket n'est pas
+              définie. Sinon, la date du dernier paquet reçu  quand  [1mSO_TIMES‐[0m
+              [1mTAMP  [22mn'était pas définie est renvoyée, provoquant un échec s'il
+              n'existe pas de tels paquets (c'est-à-dire que [1mioctl[22m(2)  renvoie
+              -1 avec un [4merrno[24m défini à [1mENOENT[22m).
+
+       [1mSIOCSPGRP[0m
+              Définit le processus ou le groupe de processus à qui envoyer les
+              signaux [1mSIGIO [22mou  [1mSIGURG  [22mlorsqu'une  opération  d'entrée-sortie
+              asynchrone  est  terminée ou si des données urgentes sont dispo‐
+              nibles. L'argument est un pointeur sur un [4mpid_t[24m.  Si  l'argument
+              est positif, le signal est envoyé à ce processus. S'il est néga‐
+              tif, le signal est envoyé au groupe de processus dont  l'identi‐
+              fiant correspond à la valeur absolue de l'argument. Un processus
+              ne peut demander que l'émission  vers  lui-même  ou  son  propre
+              groupe, à moins qu'il ait la capacité [1mCAP_KILL [22mou un identifiant
+              d'utilisateur effectif nul.
+
+       [1mFIOASYNC[0m
+              Change l'attribut [1mO_ASYNC [22mpour activer  ou  désactiver  le  mode
+              d'entrée-sortie asynchrone de la socket. Un mode d'entrée-sortie
+              asynchrone signifie que le signal [1mSIGIO [22mou le signal défini avec
+              [1mF_SETSIG  [22mest  envoyé quand un événement d'entrée-sortie se pro‐
+              duit.
+
+              Le paramètre est un booléen entier. (Cette opération  est  syno‐
+              nyme  de  l'utilisation  de  [1mfcntl[22m(2)  pour  définir  l'attribut
+              [1mO_ASYNC[22m).
+
+       [1mSIOCGPGRP[0m
+              Lit le processus ou le groupe de processus  auquel  les  signaux
+              [1mSIGIO  [22mou [1mSIGURG [22msont envoyés. Zéro est obtenu quand aucun n'est
+              défini.
+
+       Opérations [1mfcntl[22m(2) valables :
+
+       [1mFIOGETOWN[0m
+              Identique à l'[1mioctl[22m(2) [1mSIOCGPGRP[22m.
+
+       [1mFIOSETOWN[0m
+              Identique à l'[1mioctl[22m(2) [1mSIOCSPGRP[22m.
+
+[1mVERSIONS[0m
+       [1mSO_BINDTODEVICE [22ma été introduit dans Linux 2.0.30. [1mSO_PASSCRED [22mest  une
+       nouveauté  de  Linux 2.2. Les interfaces [4m/proc[24m ont été introduites dans
+       Linux 2.2. [1mSO_RCVTIMEO [22met [1mSO_SNDTIMEO [22msont gérés  depuis  Linux 2.3.41.
+       Auparavant, les délais d'attente étaient définis dans les protocoles et
+       ne pouvaient être ni lus ni modifiés.
+
+[1mNOTES[0m
+       Linux suppose que la moitié du tampon d'émission/réception est  utilisé
+       pour  les  structures  internes  du  noyau.  Ainsi les valeurs dans les
+       fichiers [4m/proc[24m correspondants sont deux fois plus grandes  que  ce  que
+       l'on peut observer directement sur le câble.
+
+       Linux  ne permettra la réutilisation des ports qu'avec l'option [1mSO_REU‐[0m
+       [1mSEADDR [22mlorsque celle-ci sera définie à la fois par  le  précédent  pro‐
+       gramme  qui  a  effectué un [1mbind[22m(2) sur le port et par le programme qui
+       veut réutiliser ce port. Ceci diffère de certaines implémentations (par
+       exemple,  sur  FreeBSD)  où  seul  le  dernier  programme  doit définir
+       l'option [1mSO_REUSEADDR[22m. Habituellement, cette différence est  invisible,
+       puisque,  par  exemple,  un  programme  serveur est conçu pour toujours
+       définir cette option.
+
+[1mBOGUES[0m
+       Des options [1mCONFIG_FILTER [22mde socket, [1mSO_ATTACH_FILTER [22met [1mSO_DETACH_FIL‐[0m
+       [1mTER[22m,  ne  sont  pas  documentées.  Pour  les utiliser, il est conseillé
+       d'utiliser la bibliothèque libpcap.
+
+[1mVOIR AUSSI[0m
+       [1mconnect[22m(2), [1mgetsockopt[22m(2), [1msetsockopt[22m(2),  [1msocket[22m(2),  [1mcapabilities[22m(7),
+       [1mddp[22m(7), [1mip[22m(7), [1mpacket[22m(7), [1mtcp[22m(7), [1mudp[22m(7), [1munix[22m(7)
+
+[1mCOLOPHON[0m
+       Cette  page  fait  partie  de  la  publication 3.70 du projet [4mman-pages[0m
+       Linux. Une description du projet et des instructions pour signaler  des
+       anomalies       peuvent       être       trouvées      à      l'adresse
+       http://www.kernel.org/doc/man-pages/.
+
+[1mTRADUCTION[0m
+       Depuis 2010, cette traduction est maintenue à l'aide  de  l'outil  po4a
+       <http://po4a.alioth.debian.org/> par l'équipe de traduction francophone
+       au sein du projet perkamon <http://perkamon.alioth.debian.org/>.
+
+       Christophe Blaess <http://www.blaess.fr/christophe/> (1996-2003), Alain
+       Portal  <http://manpagesfr.free.fr/>  (2003-2006).  Julien  Cristau  et
+       l'équipe francophone de traduction de Debian (2006-2009).
+
+       Veuillez signaler toute erreur de  traduction  en  écrivant  à  <perka‐
+       mon-fr@traduc.org>.
+
+       Vous  pouvez  toujours avoir accès à la version anglaise de ce document
+       en utilisant la commande « [1mLC_ALL=C man [4m[22m<section>[24m [4m<page_de_man>[24m ».
+
+Linux                           8 juillet 2014                       SOCKET(7)

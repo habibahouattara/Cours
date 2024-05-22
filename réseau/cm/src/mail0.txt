@@ -1,0 +1,42 @@
+X-Account-Key: account2
+X-UIDL: 1086901509.34343
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <Yannick.Guesnet@univ-rouen.fr>
+Received: from melun.univ-rouen.fr ([unix socket])
+	 by melun.univ-rouen.fr (Cyrus v2.3.16-Fedora-RPM-2.3.16-6) with LMTPA;
+	 Tue, 22 Jan 2013 09:29:26 +0100
+X-Sieve: CMU Sieve 2.3
+Received: from carentan.univ-rouen.fr (carentan.univ-rouen.fr [10.0.128.78])
+	by melun.univ-rouen.fr (Postfix) with ESMTP id 046569803E
+	for <Yannick.Guesnet@univ-rouen.fr>; Tue, 22 Jan 2013 09:29:19 +0100 (CET)
+Received: from mailly.univ-rouen.fr (mailly.univ-rouen.fr [10.0.128.68])
+	by carentan.univ-rouen.fr (Postfix) with ESMTP id 020742002E
+	for <Yannick.Guesnet@univ-rouen.fr>; Tue, 22 Jan 2013 09:29:19 +0100 (CET)
+Received: from localhost (unknown [127.0.0.1])
+	by mailly.univ-rouen.fr (Postfix) with ESMTP id EFCEDE0416
+	for <Yannick.Guesnet@univ-rouen.fr>; Tue, 22 Jan 2013 08:29:18 +0000 (UTC)
+X-Virus-Scanned: amavisd-new at univ-rouen.fr
+Received: from mailly.univ-rouen.fr ([127.0.0.1])
+	by localhost (mailly.univ-rouen.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id F0qXWolVWAgJ for <Yannick.Guesnet@univ-rouen.fr>;
+	Tue, 22 Jan 2013 09:29:18 +0100 (CET)
+Received: from mailhac.univ-rouen.fr (mailhac.univ-rouen.fr [10.0.128.40])
+	by mailly.univ-rouen.fr (Postfix) with ESMTP id 2DF0EE01FC
+	for <Yannick.Guesnet@univ-rouen.fr>; Tue, 22 Jan 2013 09:29:18 +0100 (CET)
+Received: from localhost.localdomain (inf-port-guesnet.univ-rouen.fr [10.195.163.94])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mailhac.univ-rouen.fr (Postfix) with ESMTPSA id 04F132015C
+	for <Yannick.Guesnet@univ-rouen.fr>; Tue, 22 Jan 2013 09:29:17 +0100 (CET)
+Message-ID: <50FE4DDD.9020500@univ-rouen.fr>
+Date: Tue, 22 Jan 2013 09:29:17 +0100
+From: Yannick Guesnet <Yannick.Guesnet@univ-rouen.fr>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130110 Thunderbird/17.0.2
+To: Yannick Guesnet <Yannick.Guesnet@univ-rouen.fr>
+Subject: Coucou
+
+Bonjour.
+
+

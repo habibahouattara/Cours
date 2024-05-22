@@ -1,0 +1,60 @@
+Return-Path: <Yannick.Guesnet@univ-rouen.fr>
+Received: from melun.univ-rouen.fr ([unix socket])
+	 by melun.univ-rouen.fr (Cyrus v2.3.16-Fedora-RPM-2.3.16-6) with LMTPA;
+	 Tue, 22 Jan 2013 09:59:32 +0100
+Received: from carentan.univ-rouen.fr (carentan.univ-rouen.fr [10.0.128.78])
+	by melun.univ-rouen.fr (Postfix) with ESMTP id 91EC39803A
+	for <Yannick.Guesnet@univ-rouen.fr>; Tue, 22 Jan 2013 09:59:32 +0100 (CET)
+Received: from mailly.univ-rouen.fr (mailly.univ-rouen.fr [10.0.128.68])
+	by carentan.univ-rouen.fr (Postfix) with ESMTP id 8F3372002E
+	for <Yannick.Guesnet@univ-rouen.fr>; Tue, 22 Jan 2013 09:59:32 +0100 (CET)
+Received: from localhost (unknown [127.0.0.1])
+	by mailly.univ-rouen.fr (Postfix) with ESMTP id 7BF7EE041C
+	for <Yannick.Guesnet@univ-rouen.fr>; Tue, 22 Jan 2013 08:59:32 +0000 (UTC)
+Received: from mailly.univ-rouen.fr ([127.0.0.1])
+	by localhost (mailly.univ-rouen.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id pKkHIn9QpfUe for <Yannick.Guesnet@univ-rouen.fr>;
+	Tue, 22 Jan 2013 09:59:32 +0100 (CET)
+Received: from mailhac.univ-rouen.fr (mailhac.univ-rouen.fr [10.0.128.40])
+	by mailly.univ-rouen.fr (Postfix) with ESMTP id 69889E01FC
+	for <Yannick.Guesnet@univ-rouen.fr>; Tue, 22 Jan 2013 09:59:32 +0100 (CET)
+Received: from localhost.localdomain (inf-port-guesnet.univ-rouen.fr [10.195.163.94])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mailhac.univ-rouen.fr (Postfix) with ESMTPSA id 68DF120009
+	for <Yannick.Guesnet@univ-rouen.fr>; Tue, 22 Jan 2013 09:59:32 +0100 (CET)
+Message-ID: <50FE54F4.1000205@univ-rouen.fr>
+Date: Tue, 22 Jan 2013 09:59:32 +0100
+From: Yannick Guesnet <Yannick.Guesnet@univ-rouen.fr>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130110 Thunderbird/17.0.2
+MIME-Version: 1.0
+To: Yannick Guesnet <Yannick.Guesnet@univ-rouen.fr>
+Subject: Message "multipart"
+Content-Type: multipart/alternative;
+ boundary="------------040001060509030803030100"
+
+This is a multi-part message in MIME format.
+--------------040001060509030803030100
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 8bit
+
+Un message électronique avec accents et /formatage/.
+
+
+--------------040001060509030803030100
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+
+<html>
+  <head>
+    <meta content="text/html; charset=ISO-8859-1"
+      http-equiv="Content-Type">
+  </head>
+  <body bgcolor="#FFFFFF" text="#000000">
+    Un message &eacute;lectronique avec accents et <i>formatage</i>.<br>
+    <br>
+  </body>
+</html>
+
+--------------040001060509030803030100--
+

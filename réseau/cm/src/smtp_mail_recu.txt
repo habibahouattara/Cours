@@ -1,0 +1,40 @@
+From - Tue Jan 22 10:19:16 2013
+X-Account-Key: account2
+X-UIDL: 1086901509.34353
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <un.inconnu@univ-rouen.fr>
+Received: from melun.univ-rouen.fr ([unix socket])
+	 by melun.univ-rouen.fr (Cyrus v2.3.16-Fedora-RPM-2.3.16-6) with LMTPA;
+	 Tue, 22 Jan 2013 10:16:42 +0100
+X-Sieve: CMU Sieve 2.3
+Received: from carentan.univ-rouen.fr (carentan.univ-rouen.fr [10.0.128.78])
+	by melun.univ-rouen.fr (Postfix) with ESMTP id CA58B9803A
+	for <yannick.guesnet@univ-rouen.fr>; Tue, 22 Jan 2013 10:16:42 +0100 (CET)
+Received: from mailly.univ-rouen.fr (mailly.univ-rouen.fr [10.0.128.68])
+	by carentan.univ-rouen.fr (Postfix) with ESMTP id C7BA1201AE
+	for <yannick.guesnet@univ-rouen.fr>; Tue, 22 Jan 2013 10:16:42 +0100 (CET)
+Received: from localhost (unknown [127.0.0.1])
+	by mailly.univ-rouen.fr (Postfix) with ESMTP id C5C45E025A
+	for <yannick.guesnet@univ-rouen.fr>; Tue, 22 Jan 2013 09:16:42 +0000 (UTC)
+X-Virus-Scanned: amavisd-new at univ-rouen.fr
+X-Amavis-Alert: BAD HEADER SECTION, Missing required header field: "Date"
+Received: from mailly.univ-rouen.fr ([127.0.0.1])
+	by localhost (mailly.univ-rouen.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id mdD7qqn5kfqg for <yannick.guesnet@univ-rouen.fr>;
+	Tue, 22 Jan 2013 10:16:42 +0100 (CET)
+Received: from mailhac.univ-rouen.fr (mailhac.univ-rouen.fr [10.0.128.40])
+	by mailly.univ-rouen.fr (Postfix) with ESMTP id B585BE01FC
+	for <yannick.guesnet@univ-rouen.fr>; Tue, 22 Jan 2013 10:16:42 +0100 (CET)
+Received: from univ-rouen.fr (inf-port-guesnet.univ-rouen.fr [10.195.163.94])
+	by mailhac.univ-rouen.fr (Postfix) with SMTP id A079320102
+	for <yannick.guesnet@univ-rouen.fr>; Tue, 22 Jan 2013 10:15:35 +0100 (CET)
+From: un.inconnu@univ-rouen.fr
+TO: yannick.guesnet@univ-rouen.fr
+Message-Id: <20130122091642.C5C45E025A@mailly.univ-rouen.fr>
+Date: Tue, 22 Jan 2013 10:16:42 +0100 (CET)
+
+Bonjour.
+
+

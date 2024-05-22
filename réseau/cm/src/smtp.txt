@@ -1,0 +1,27 @@
+[Yannick@localhost ~]$ telnet smtp.univ-rouen.fr 25
+Trying 10.0.128.40...
+Connected to smtp.univ-rouen.fr.
+Escape character is '^]'.
+220 mailhac.univ-rouen.fr ESMTP
+HELO 
+501 Syntax: HELO hostname
+HELO univ-rouen.fr
+250 mailhac.univ-rouen.fr
+MAIL FROM: <un.inconnu@univ-rouen.fr>
+250 2.1.0 Ok
+RCPT TO: <yannick.guesnet@univ-rouen.fr>
+250 2.1.5 Ok
+DATA
+354 End data with <CR><LF>.<CR><LF>
+From: un.inconnu@univ-rouen.fr
+TO: yannick.guesnet@univ-rouen.fr
+
+Bonjour.
+
+.
+250 2.0.0 Ok: queued as A079320102
+QUIT
+221 2.0.0 Bye
+Connection closed by foreign host.
+[Yannick@localhost ~]$ 
+
