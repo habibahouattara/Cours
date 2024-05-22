@@ -1,0 +1,24 @@
+TP 01 :
+- définition de la grammaire
+
+pour compiler:
+1) make
+2)
+- ./tp
+- entrée
+- Ctrl + D pour redonner la main
+
+TP 02 :
+- ajout des expressions arithmétiques: +, -, *, /
+- ajout du code assembleur générer en C
+
+pour compiler avec asipro et sipro
+1) make
+2) ./prog > prog.asm
+3)
+- entré un calcul
+- faire entrée
+- Ctrl D pour redonner la main
+4) ./aspiro prog.asm exec
+5) ./sipro exec
+

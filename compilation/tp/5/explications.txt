@@ -1,0 +1,104 @@
+TP 01 :
+- définition de la grammaire
+
+pour compiler:
+1) make
+2)
+- ./tp
+- entrée
+- un calcul
+- Ctrl + D pour redonner la main
+
+===============================================================================
+
+TP 02 :
+- ajout des expressions arithmétiques: +, -, *, /
+- ajout du code assembleur générer en C
+- définition des types synthétiques
+
+pour compiler avec asipro et sipro
+1) make
+2) ./prog > prog.asm
+3)
+- un calcul;
+- faire entrée
+- Ctrl + D pour redonner la main
+4) ./aspiro prog.asm exec
+5) ./sipro exec
+
+===============================================================================
+
+TP 03 :
+- $1, $2 représentent les symboles lus
+	=> ex: EXPR '+' EXPR : $1 est le 1re EXPR et $3 est le 2nd
+	=> '+' est considéré comme $2 mais il n'est pas lu
+- ajout des expressions booléennes: TRUE, FALSE, AND et OR
+- vérification légére du type des syboles
+
+pour compiler avec asipro et sipro
+1) make
+2) ./prog > prog.asm
+3)
+- un calcul;
+- faire entrée
+- Ctrl + D pour redonner la main
+4) ./aspiro prog.asm exec
+5) ./sipro exec
+
+===============================================================================
+
+TP 04 : /!\ FONCTIONNE PAS ÇA ME GONFLE AU NIVEAU DE AFFECTATION /!\
+- /!\ revoir les expréssions booléenne
+
+- début de la défintion de la table des symboles (ajout et recherche)
+- nouveau type pour les variables
+- nouveau type pour identifiant
+- voir comment libérer les données de la table à la fin d'un calcul
+- vérification du type des symboles
+
+pour compiler avec asipro et sipro
+1) make
+2) ./prog > prog.asm
+3)
+- un calcul;
+- faire entrée
+- Ctrl + D pour redonner la main
+4) ./aspiro prog.asm exec
+5) ./sipro exec
+
+===============================================================================
+
+TP 05 :
+- rédéfintion des méthodes et fonctions
+- /!\ revoir les expréssions booléennes fonctionnent vite fait
+- ajout des expr booléenne : EQ, NOT, NEQ, INF, INFEQ, SUP, SUPEQ
+- affectation : OK
+- output : OK
+
+prog.l:
+- changement de recopier(s) par strncpy
+
+prog.y:
+- changement de l'axiome
+- défintion des méthodes createLabel et createNumLabel pour étiquettes uniques
+- ajout des varibles dans le code assembleur
+	=> :var:a
+		 @int 0
+
+pour compiler avec asipro et sipro
+1) make
+2) ./prog > prog.asm
+3)
+- a = un calcul;
+- output(a);
+- faire entrée
+- Ctrl + D pour redonner la main
+4) ./aspiro prog.asm exec
+5) ./sipro exec
+
+calculs de test
+a = (true or true or true) == (1+2==3 or 4==5-1);
+output(a);
+
+b = 1+2;
+output(b);

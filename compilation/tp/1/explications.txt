@@ -1,0 +1,10 @@
+TP 01 :
+- définition de la grammaire
+
+pour compiler:
+1) make
+2)
+- ./tp
+- entrée
+- Ctrl + D pour redonner la main
+
