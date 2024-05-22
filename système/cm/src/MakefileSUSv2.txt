@@ -1,0 +1,8 @@
+CFLAGS = -std=c18 -Wpedantic -Wall -Wextra -Wconversion -Werror -fstack-protector-all -D_XOPEN_SOURCE=500
+
+sid: sid.o
+
+sid.o: sid.c
+
+clean:
+	$(RM) *.o *~
